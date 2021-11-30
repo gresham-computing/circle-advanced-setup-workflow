@@ -42,12 +42,22 @@ jobs:
       - common-say-hello
       - run: echo 'Jobs with `common-` prefix are intended to be shared among modules'
 
+  create_run_time_assembler_diff:
+    docker:
+      - image: alpine
+    steps:
+      - common-say-hello
+      - run: echo "Hello World" >> ~/module-a/helloworld.txt  
+
 workflows:
   # The setup workflow
   setup-workflow:
     when: << pipeline.parameters.run-setup >>
     jobs:
+      - create_run_time_assembler_diff
       - config-splitting/setup-dynamic-config:
+          requires:
+            - create_run_time_assembler_diff
           force-all: << pipeline.parameters.force-all >>
           base-revision: main
           # If A is modified, the job for A will run
