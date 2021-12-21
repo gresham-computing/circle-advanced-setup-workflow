@@ -53,6 +53,15 @@ workflows:
             .* run-setup false
             module-a/.* run-module-a true
             module-b/.* run-module-b true
+  modulesab:
+    when:
+      and:
+        -  << pipeline.parameters.run-module-a >>
+        -  << pipeline.parameters.run-module-b >>
+      jobs:
+        - module-a
+        - module-b
+
   module-a:
     when: << pipeline.parameters.run-module-a >>
     jobs:
