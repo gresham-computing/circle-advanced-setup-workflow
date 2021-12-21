@@ -58,9 +58,9 @@ workflows:
       and:
         -  << pipeline.parameters.run-module-a >>
         -  << pipeline.parameters.run-module-b >>
-      jobs:
-        - module-a
-        - module-b
+    jobs:
+      - module-a
+      - module-b
 
   module-a:
     when: << pipeline.parameters.run-module-a >>
