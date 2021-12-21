@@ -1,0 +1,55 @@
+version: 2.1
+
+
+parameters:
+  run-module-a:
+    type: boolean
+    default: false
+  run-module-b:
+    type: boolean
+    default: false
+
+jobs:
+  module-a:
+    docker:
+      - image: alpine
+    steps:
+      - checkout
+      - run: "echo 'Hello from module A!'"
+      - run: cat module-a/README.md
+
+  module-b:
+    machine: true
+    steps:
+      - checkout
+      - run: "echo 'Hello from module B!'"
+      - run: cat module-b/README.md
+
+  module-b-post:
+    docker:
+      - image: alpine
+    steps:
+      - run: "echo 'Continuing module B'"
+      - run: env
+
+workflows:
+  modulesab:
+    when:
+      and:
+        - equal: [true,<< pipeline.parameters.run-module-a >>]
+        - equal: [true,<< pipeline.parameters.run-module-b >>]
+    jobs:
+      - module-a
+      - module-b
+
+  module-a:
+    when: << pipeline.parameters.run-module-a >>
+    jobs:
+      - module-a
+  module-b:
+    when: << pipeline.parameters.run-module-b >>
+    jobs:
+      - module-b
+      - module-b-post:
+          requires:
+            - module-b
