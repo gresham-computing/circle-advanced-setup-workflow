@@ -12,7 +12,7 @@ workflows:
       - path-filtering/filter:
           name: check-updated-files
           # Compare files on head of this branch
-          base-revision: HEAD
+          base-revision: main
           # Config for continuation; herein we reuse this config itself
           config-path: .circleci/continue_config.yml
           # 3-column space-separated table for mapping; `path-to-test parameter-to-set value-for-parameter` for each row

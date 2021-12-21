@@ -33,15 +33,6 @@ jobs:
       - run: env
 
 workflows:
-  modulesab:
-    when:
-      and:
-        - equal: [true,<< pipeline.parameters.run-module-a >>]
-        - equal: [true,<< pipeline.parameters.run-module-b >>]
-    jobs:
-      - module-a
-      - module-b
-
   module-a:
     when: << pipeline.parameters.run-module-a >>
     jobs:
